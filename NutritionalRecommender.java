@@ -77,8 +77,9 @@ public class NutritionalRecommender
 			double missingNutrientIntake = missingIntake.get(nutrient);
 			if (missingNutrientIntake > 0){
 				for (Food food : foodDatabase){
+					double nutrientIntake = 0.0;
 					for (Food.Nutrient n: Food.Nutrient.values()){
-						double nutrientIntake = food.getNutrientIntake(n);
+						nutrientIntake = food.getNutrientIntake(n);
 						if (missingIntake.get(n) <= 0){
 							// not missing this nutrient, but adding this food to the recommended list will OD this nutrient
 							break;
@@ -88,6 +89,8 @@ public class NutritionalRecommender
 						if (recommendedFoods.containsKey(food)){
 							int oldValue = recommendedFoods.get(food);
 							recommendedFoods.put(food, oldValue+1);
+							double oldIntake = missingIntake.get(nutrient);
+							missingIntake.put(nutrient, oldIntake - nutrientIntake);
 						} else {
 							recommendedFoods.put(food, 1);
 						}
