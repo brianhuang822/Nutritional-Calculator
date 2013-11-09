@@ -1,0 +1,31 @@
+# serving size (g)
+serving_size 30
+
+# name | energy (kCal)
+total_calories 88
+fat_calories 63
+
+# name | mass (g) | daily portion (%) [based on a 2000 kcal diet]
+total_fat 6 10
+saturated_fat 4 20
+trans_fat
+cholesterol 0.021 7
+sodium 208 9
+total_carbohydrates 1 0
+dietary fiber 0.012 0
+sugar 0.503
+protein 7 13
+
+# name | daily portion (g)
+vitamin_A 0.000053
+calcium 0.174
+iron 0.000141
+vitamin_D 0.0001525
+thiamin 0.000011
+riboflavin 0.000106
+vitamin_B6 0.000026
+vitamin_B12 0.00000032
+folate 0.0000044
+phosphorus 0.134
+magnesium 0.0074
+zinc 0.000736
