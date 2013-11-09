@@ -1,0 +1,19 @@
+{{{serving size 3 oz (85 g)}}, {{total calories  190, 
+   fat calories  89}}, {{% daily value^, 
+   }, {  total fat  10 g, 
+   Quantity[15, Percent]}, {       saturated fat  3 g, 
+   Quantity[13, Percent]}, {       trans fat  70 mg, 
+   Missing[NotApplicable]}, {  cholesterol  92 mg, 
+   Quantity[31, Percent]}, {  sodium  127 mg, 
+   Quantity[5, Percent]}, {  total carbohydrates  2 g, 
+   Quantity[1, Percent]}, {       dietary fiber  53 mg, 
+   Quantity[0, Percent]}, {       sugar  110 mg, 
+   Missing[NotApplicable]}, {  protein  22 g, 
+   Quantity[44, 
+    Percent]}}, {{{   vitamin A  10%   }, {   vitamin C  1%   
+}}, {{   calcium  1%   }, {   iron  8%   }}, {{   vitamin E  1% 
+  }, {   thiamin  4%   }}, {{   riboflavin  12%   }, {   niacin 
+ 29%   }}, {{   vitamin B6  14%   }, {   vitamin B12  11%   }}, 
+{{   folate  6%   }, {   phosphorus  15%   }}, {{   magnesium  
+5%   }, {   zinc  13%   }}}, percent daily values are based on a 
+2000 calorie diet}
