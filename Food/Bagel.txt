@@ -1,5 +1,11 @@
+# serving size (g)
 serving_size 75
+
+# name | energy (kCal)
 total_calories 207
+fat_calories 10
+
+# name | mass (g) | daily portion (%) [based on a 2000 kcal diet]
 total_fat 1
 saturated_fat 0.211 1
 trans_fat 0
@@ -9,6 +15,9 @@ total_carbohydrates 41 14
 dietary fiber 2 7
 sugar 4
 protein 8 16
+
+
+# name | daily portion (%) [based on a 2000 kcal diet]
 calcium 3
 iron 15
 vitamin_E 1
