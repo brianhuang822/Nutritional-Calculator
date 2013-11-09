@@ -1,34 +1,31 @@
 import java.util.*;
 
-public class Person implements Iterable<String>  {
-ArrayList arr;
-	public static class MyIterator implements Iterator<String> {
+public class Person implements Iterator<String>  {
+    ArrayList <String>arr = new ArrayList ();
+    int current = 0;
 
-        private final Person person;
-        private int current;
-
-        MyIterator(Person person,Hash) {
-            this.person = person;
-            this.current = 0;
+    public Person(HashMap<String,Food> food, HashMap<String,Integer> amount) {
+        for (String foodname:food.keySet()){
+            arr.add (foodname + Integer.toString(amount.get(foodname)));
         }
-
-        @Override
-        public boolean hasNext() {
-            return current < arr.size ();
-        }
-
-        @Override
-        public String next() {
-            if (! hasNext())   return null;
-            return person.arr.get(current++);
-			
-        }
-	}
-	public Iterator<String> iterator(HashMap food, HashMap amount) {
-		for (String foodname:foodDatabase.keySet()){
-			arr = foodname + (fooddatabase.get(foodname)).toString();
-		}
-        return new MyIterator();
     }
 
+    @Override
+    public boolean hasNext() {
+        return current < arr.size ();
+    }
+
+    @Override
+    public String next() {
+        if (! hasNext())   return null;
+        return arr.get(current++);
+
+    }
+
+    @Override
+    public void remove() {
+
+    }
 }
+
+
