@@ -39,6 +39,7 @@ public class Food
 		
 		String line;
 		line = reader.readLine();
+
 		
 		while (line != null) {
 			parseLine(line);
