@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -10,7 +12,6 @@ public class Applet extends JPanel
 
 	private static final long serialVersionUID = 1L;
 	private static final String applicationName = "Eat right!";
-	private final HashMap<String, Food> foodDatabase = NutritionalRecommender.getFoodDatabase();
 	
 	/*
 	 * Animation parameters.
@@ -28,8 +29,23 @@ public class Applet extends JPanel
 	private HashMap<String, JLabel> sliderLabels;
 	private HashMap<String, Integer> foodMultipliers;
 	
+	/*
+	 * Food database.
+	 */
+	private Hashtable<String, Food> foodDatabase;
+	
 	public Applet()
 	{
+		/*
+		 * Initialize food database.
+		 */
+		try {
+			foodDatabase = NutritionalRecommender.getFoodDatabase();
+		} catch (IOException e) {
+			System.out.println("Unable to load food database. Aborting.");
+			System.exit(-1);
+		}
+		
 		/*
 		 * Initialize food multipliers.
 		 */
