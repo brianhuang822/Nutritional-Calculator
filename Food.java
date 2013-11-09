@@ -19,6 +19,7 @@ public class Food
 		PROTEIN,
 		VITAMIN_A,
 		VITAMIN_C,
+		VITAMIN_D,
 		CALCIUM,
 		IRON,
 		VITAMIN_E,
@@ -33,6 +34,12 @@ public class Food
 		ZINC
 	};
 
+	private String name;
+	private double servingSize;
+	private double totalCalories;
+	private double fatCalories;
+	private HashMap<Nutrient, Double> nutrientIntake;
+	
 	public Food(String pPath) throws FileNotFoundException, IOException
 	{
 		BufferedReader reader = null;
@@ -71,38 +78,41 @@ public class Food
 
 	public double getNutrientIntake(String nutrient)
 	{
+		if (!nutrientIntake.containsKey(nutrient)) {
+			return 0.0;
+		}
+		
 		return nutrientIntake.get(nutrient);
 	}
 
-	private String name;
-	private double servingSize;
-	private double totalCalories;
-	private double fatCalories;
-	private HashMap<Nutrient, Integer> nutrientIntake;
-
 	private void parseLine(String line)
 	{
-		if (line.charAt(0) == '#' || line.matches("(\t|\\s)*\n")) {
+		if (line.compareTo("") == 0 || line.charAt(0) == '#' || line.matches("(\t|\\s)*\n")) {
 			return;
 		}
 
 		String[] tokens = line.split(" ");
 		assert tokens.length == 2;
 		
-		if (tokens[0].compareTo("SERVING_SIZE") == 0) {
-			servingSize = Integer.parseInt(tokens[1]);
-		} else if (tokens[0].compareTo("TOTAL_CALORIES") == 0) {
-			totalCalories = Integer.parseInt(tokens[1]);
-		} else if (tokens[0].compareTo("FAT_CALORIES") == 0) {
-			fatCalories = Integer.parseInt(tokens[1]);
-		}
+		nutrientIntake = new HashMap<Nutrient, Double>();
 		
 		boolean foundMatch = false;
-		for (Nutrient n: Nutrient.values()) {
-			if (tokens[0].compareTo(n.toString()) == 0) {
-				nutrientIntake.put(n, Integer.parseInt(tokens[1]));
-				foundMatch = true;
-				break;
+		if (tokens[0].compareTo("SERVING_SIZE") == 0) {
+			servingSize = Integer.parseInt(tokens[1]);
+			foundMatch = true;
+		} else if (tokens[0].compareTo("TOTAL_CALORIES") == 0) {
+			totalCalories = Integer.parseInt(tokens[1]);
+			foundMatch = true;
+		} else if (tokens[0].compareTo("FAT_CALORIES") == 0) {
+			fatCalories = Integer.parseInt(tokens[1]);
+			foundMatch = true;
+		} else {
+			for (Nutrient n: Nutrient.values()) {
+				if (tokens[0].compareTo(n.toString()) == 0) {
+					nutrientIntake.put(n, Double.parseDouble(tokens[1]));
+					foundMatch = true;
+					break;
+				}
 			}
 		}
 

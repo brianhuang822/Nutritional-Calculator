@@ -9,8 +9,8 @@ import java.util.Hashtable;
 public class NutritionalRecommender
 {
     static private String foodDirectory = "./Food";
-    static private String foodInformationFile = foodDirectory + "/info/total_daily_nutritional";
-    static private String foodWeightFile = foodDirectory + "/info/weights";
+    static private String foodInformationFile = "./info/total_daily_nutritional";
+    static private String foodWeightFile = "./info/weights";
 
     static public HashMap<Food, Integer> getDailyNutritionalRecommendation(Person pPerson) {
         HashMap<String, Double> recommendedDailyIntake = retrieveRecommendedDailyIntake();
@@ -120,13 +120,13 @@ public class NutritionalRecommender
     {
         HashMap<String, Double> currentIntake = new HashMap<String, Double>();
 
-        while (pPerson.hasNext()) {
-            String[] food = pPerson.next().split(" ");
+        for (String line : pPerson.foodQuantity) {
+        	String[] food = line.split(" ");
             assert food.length == 2;
 
             Food currentFood = null;
             try {
-                currentFood = new Food(food[0]);
+                currentFood = new Food(foodDirectory + "/" + food[0]);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -135,7 +135,7 @@ public class NutritionalRecommender
             double currentFoodMultiplier = Double.parseDouble(food[1]);
 
             for (Food.Nutrient n: Food.Nutrient.values()) {
-                double nutrientIntake = currentFood.getNutrientIntake(n.name()) * currentFoodMultiplier;
+        		double nutrientIntake = currentFood.getNutrientIntake(n.name()) * currentFoodMultiplier;
             
                 if (currentIntake.containsKey(n.toString())) {
                     nutrientIntake += currentIntake.get(n.toString());
@@ -197,6 +197,11 @@ public class NutritionalRecommender
         HashMap<String, Double> missingIntake = new HashMap<String, Double>();
 
         for (Food.Nutrient n: Food.Nutrient.values()) {
+        	if (!recommendedDailyIntake.containsKey(n.toString())) {
+        		assert !currentIntake.containsKey(n.toString());
+        		continue;
+        	}
+        	
             missingIntake.put(n.toString(), recommendedDailyIntake.get(n.toString()) - currentIntake.get(n.toString()));
         }
 

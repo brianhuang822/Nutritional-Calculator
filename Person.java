@@ -1,13 +1,13 @@
 import java.util.*;
 
 public class Person implements Iterator<String> {
-    ArrayList<String> arr = new ArrayList<String>();
-    Iterator<String> itor = arr.iterator();
+    public ArrayList<String> foodQuantity = new ArrayList<String>();
+    Iterator<String> itor = foodQuantity.iterator();
 
     public Person(HashMap<String, Integer> foodMultipliers)
     {
         for (String foodName: foodMultipliers.keySet()){
-            arr.add(foodName + Integer.toString(foodMultipliers.get(foodName)));
+            foodQuantity.add(foodName + " " + Integer.toString(foodMultipliers.get(foodName)));
         }
     }
 

@@ -131,8 +131,11 @@ public class Applet extends JPanel
         for (String foodName: foodDatabase.keySet()) {
         	foodMultipliers.remove(foodName);
         	foodMultipliers.put(foodName, sliders.get(foodName).getValue());
+        	
+        	JLabel label = sliderLabels.get(foodName);
+        	label.setText(foodName + ": " + foodMultipliers.get(foodName));
         	sliderLabels.remove(foodName);
-        	sliderLabels.put(foodName, new JLabel(foodName + ": " + foodMultipliers.get(foodName), JLabel.RIGHT));
+        	sliderLabels.put(foodName, label);
         }
     }
 
