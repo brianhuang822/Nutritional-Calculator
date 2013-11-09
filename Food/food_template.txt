@@ -21,6 +21,7 @@ vitamin_A
 vitamin_C
 calcium
 iron
+vitamin_D
 vitamin_E
 thiamin
 riboflavin
