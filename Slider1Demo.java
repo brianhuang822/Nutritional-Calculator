@@ -8,23 +8,54 @@ implements ActionListener,
 WindowListener,
 ChangeListener {
 
-    protected JButton b2;
+    public enum Food {
+        APPLE,
+        BAGEL,
+        BANANA,
+        BEANS,
+        CARROT,
+        CHEESE,
+        CHICKEN,
+        CHOCOLATE,
+        SALMON,
+        TUNA,
+        WHITE_BREAD
+    };
 
+    protected JButton b2;
     //Set up animation parameters.
     static final int FPS_MIN = 0;
     static final int FPS_MAX = 30;
     static final int FPS_INIT = 0;    //initial frames per second
     int frameNumber = 0;
-    int numberOfFoods = 11;
+    int numberOfFoods = 0;
+    JSlider f[];
     //This label uses ImageIcon to show the doggy pictures.
     JLabel picture;
-    JSlider f[] = new JSlider [numberOfFoods];
-    int size [] = new int  [numberOfFoods];
-    JLabel [] sliderLabel = new JLabel [numberOfFoods];
+    String [] namesOfFood;
+    JLabel [] sliderLabel;
+    int size [];
     public Slider1Demo() {
         b2 = new JButton("Recommend");
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        //Create the label.
+        //Create the label. 
+
+        int temp = 0;
+        for(Food food: Food.values()){
+            temp ++;
+        }
+        namesOfFood = new String [temp];
+        numberOfFoods = temp;
+        temp = 0;
+        for(Food food: Food.values()){
+            namesOfFood[temp] = food.toString();
+            temp ++;
+        }
+        numberOfFoods = temp;
+        f = new JSlider [numberOfFoods];
+        size =  new int  [numberOfFoods];
+
+       sliderLabel = new JLabel [numberOfFoods];
 
         for (int i = 0; i <numberOfFoods; i++) {
             f[i] =  new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
@@ -35,8 +66,8 @@ ChangeListener {
         //Turn on labels at major tick marks.
 
         for (int i = 0; i <numberOfFoods; i++) {
-            sliderLabel[i]= new JLabel("Apple: " + size [i], JLabel.CENTER);
-            sliderLabel[i].setAlignmentX(Component.CENTER_ALIGNMENT);
+            sliderLabel[i]= new JLabel(namesOfFood[i] + ": " + size [i], JLabel.RIGHT);
+
             add(sliderLabel[i]);
             f[i].setMajorTickSpacing(10);
             f[i].setMinorTickSpacing(1);
@@ -47,7 +78,6 @@ ChangeListener {
             Font font = new Font("Serif", Font.ITALIC, 12);
             f[i].setFont(font);
             add(f[i]);
-            System.out.print (i);
         }
         //Put everything together.
 
@@ -84,8 +114,7 @@ ChangeListener {
     public void stateChanged(ChangeEvent e) {
         for (int i = 0; i <numberOfFoods; i++) {
             size [i] = f[i].getValue();
-            System.out.println (size [i]);
-            sliderLabel[i].setText("Apple: " + size[i]);
+            sliderLabel[i].setText(namesOfFood[i] + ": " + size[i]);
 
         }
 
