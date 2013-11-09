@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -39,12 +38,7 @@ public class Applet extends JPanel
 		/*
 		 * Initialize food database.
 		 */
-		try {
-			foodDatabase = NutritionalRecommender.getFoodDatabase();
-		} catch (IOException e) {
-			System.out.println("Unable to load food database. Aborting.");
-			System.exit(-1);
-		}
+		foodDatabase = NutritionalRecommender.getFoodDatabase();
 		
 		/*
 		 * Initialize food multipliers.
@@ -110,7 +104,8 @@ public class Applet extends JPanel
      * Action to be performed after the recommended button is pressed.
      */
     public void actionPerformed(ActionEvent e) {
-        System.out.println ("o!!k");
+    	Person person();
+        HashMap<String, Double> recommendations = NutritionalRecommender.getDailyNutritionalRecommendation(person);
     }
     
     /*

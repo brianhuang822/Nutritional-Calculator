@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedList;
 
 public class NutritionalRecommender
 {
@@ -13,21 +12,20 @@ public class NutritionalRecommender
 	static private String foodInformationFile = foodDirectory + "/info/total_daily_nutritional";
 	static private String foodWeightFile = foodDirectory + "/info/weights";
 
-	static public HashMap<Food, Integer> getDailyNutrionalRecommendation(Person pPerson) {
+	static public HashMap<Food, Integer> getDailyNutritionalRecommendation(Person pPerson) {
 		HashMap<String, Double> recommendedDailyIntake = retrieveRecommendedDailyIntake();
-		HashMap<String, Double> currentIntake = getCurrentIntake();
+		HashMap<String, Double> currentIntake = getCurrentIntake(pPerson);
 		Hashtable<String, Double> nutrientsWeights = getNutrientWeights();
 		Hashtable<String, Food> foodDatabase = getFoodDatabase();
 		HashMap<String, Double> missingIntake = getMissingIntake(recommendedDailyIntake, currentIntake);
 
 		HashMap<Food, Integer> recommendedFoods = new HashMap<Food, Integer>();
-		boolean addNutrient = false;
 		int count;
 		
 		while (missingIntake.size() > 0){
 			for (String nutrient : missingIntake.keySet()){
 				count = 0;
-				if (missingIntake.get(nutrient) > 0){ // Missing this nutrient
+				if (missingIntake.get(nutrient) > 0){
 					for (Food food : foodDatabase.values()){
 						if (missingIntake.get(nutrient) - food.getNutrientIntake(nutrient) >= 0){
 							if (recommendedFoods.containsKey(food)){
@@ -53,19 +51,22 @@ public class NutritionalRecommender
 		return recommendedFoods;
 	}
 
-	static public Hashtable<String, Food> getFoodDatabase() throws FileNotFoundException, IOException
+	static public Hashtable<String, Food> getFoodDatabase()
 	{
 		File directory = new File(foodDirectory);
 		File[] filesInDirectory = directory.listFiles();
-//		LinkedList<Food> foodList = new LinkedList<Food>();
-//		LinkedList<Integer> weightList = new LinkedList<Integer>();
-//		
-//		
 
 		Hashtable<String, Food> foodDatabase = new Hashtable<String, Food>();
 		for (File f: filesInDirectory) {
 			if (f.isFile()) {
-				Food food = new Food(f.getAbsolutePath());
+				Food food = null;
+				try {
+					food = new Food(f.getAbsolutePath());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				foodDatabase.put(f.getName(), food);
 			}
 		}
@@ -73,7 +74,7 @@ public class NutritionalRecommender
 		return foodDatabase;
 	}
 
-	static private HashMap<String, Double> retrieveRecommendedDailyIntake() throws IOException
+	static private HashMap<String, Double> retrieveRecommendedDailyIntake()
 	{
 		HashMap<String, Double> recommendedDailyIntake = new HashMap<String, Double>();
 	
@@ -108,12 +109,16 @@ public class NutritionalRecommender
 			}
 		}
 		
-		foodInformationReader.close();
+		try {
+			foodInformationReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		return recommendedDailyIntake;
 	}
 
-	static private HashMap<String, Double> getCurrentIntake()
+	static private HashMap<String, Double> getCurrentIntake(Person pPerson)
 	{
 		HashMap<String, Double> currentIntake = new HashMap<String, Double>();
 
@@ -121,7 +126,14 @@ public class NutritionalRecommender
 			String[] food = foodAndAmount.split(" ");
 			assert food.length == 2;
 
-			Food currentFood = new Food(food[0]);
+			Food currentFood = null;
+			try {
+				currentFood = new Food(food[0]);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			double currentFoodMultiplier = Double.parseDouble(food[1]);
 
 			for (Food.Nutrient n: Food.Nutrient.values()) {
@@ -139,7 +151,7 @@ public class NutritionalRecommender
 		return currentIntake;
 	}
 
-	static private Hashtable<String, Double> getNutrientWeights() throws IOException
+	static private Hashtable<String, Double> getNutrientWeights()
 	{
 		BufferedReader reader = null;
 		try {
@@ -172,7 +184,13 @@ public class NutritionalRecommender
 				System.exit(-1);
 			}
 		}
-		reader.close();
+		
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return nutrientWeights;
 	}
 

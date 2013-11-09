@@ -1,7 +1,8 @@
 import java.util.*;
 
 public class Person implements Iterable<String>  {
-ArrayList arr;
+	private ArrayList arr;
+	
 	public static class MyIterator implements Iterator<String> {
 
         private final Person person;
@@ -26,7 +27,7 @@ ArrayList arr;
 	}
 	public Iterator<String> iterator(HashMap food, HashMap amount) {
 		for (String foodname:foodDatabase.keySet()){
-			arr = foodname + (fooddatabase.get(foodname)).toString();
+			arr = foodname + (foodDatabase.get(foodname)).toString();
 		}
         return new MyIterator();
     }
