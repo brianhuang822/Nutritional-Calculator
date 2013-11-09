@@ -63,9 +63,9 @@ public class Food
 		return fatCalories;
 	}
 
-	public double getNutrientIntake(Nutrient n)
+	public double getNutrientIntake(String nutrient)
 	{
-		return nutrientIntake.get(n);
+		return nutrientIntake.get(nutrient);
 	}
 
 	private double servingSize;
@@ -75,10 +75,6 @@ public class Food
 
 	private void parseLine(String line)
 	{
-		if (line[0] == '#' || line.match("(\t|\s)*\n")) {
-			return;
-		}
-
 		String[] tokens = line.split(" ");
 		assert tokens.length == 2;
 		

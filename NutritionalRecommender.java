@@ -1,6 +1,10 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class NutritionalRecommender
@@ -10,73 +14,68 @@ public class NutritionalRecommender
 	static private String foodWeightFile = foodDirectory + "/info/weights";
 
 	static public HashMap<Food, Integer> getDailyNutrionalRecommendation(Person pPerson) {
-		HashMap<String, Double> recommendedDailyIntake = getRecommendedDailyIntake();
+		HashMap<String, Double> recommendedDailyIntake = retrieveRecommendedDailyIntake();
 		HashMap<String, Double> currentIntake = getCurrentIntake();
-		HashMap<String, Double> nutrientsWeights = getNutrientWeights();
-		HashMap<String, Food> foodDatabase = getFoodDatabase();
+		Hashtable<String, Double> nutrientsWeights = getNutrientWeights();
+		Hashtable<String, Food> foodDatabase = getFoodDatabase();
 		HashMap<String, Double> missingIntake = getMissingIntake(recommendedDailyIntake, currentIntake);
 
 		HashMap<Food, Integer> recommendedFoods = new HashMap<Food, Integer>();
 		boolean addNutrient = false;
-
-		while (missingIntake.size() > 0) {
-			for (String nutrient : recommendedDailyIntake.keySet()){
-				double missingNutrientIntake = missingIntake.get(nutrient);
-
-				if (missingNutrientIntake > 0) {
-					for (Food food: foodDatabase.values()) {
-						double nutrientIntake = 0.0;
-
-						for (Food.Nutrient n: Food.Nutrient.values()) {
-							nutrientIntake = currentIntake(n.toString());
-
-							if (missingIntake.get(n.toString()) <= 0) {
-								// not missing this nutrient, but adding this food to the recommended list will OD this nutrient
-								break;
+		int count;
+		
+		while (missingIntake.size() > 0){
+			for (String nutrient : missingIntake.keySet()){
+				count = 0;
+				if (missingIntake.get(nutrient) > 0){ // Missing this nutrient
+					for (Food food : foodDatabase.values()){
+						if (missingIntake.get(nutrient) - food.getNutrientIntake(nutrient) >= 0){
+							if (recommendedFoods.containsKey(food)){
+								recommendedFoods.put(food, recommendedFoods.get(food)+1);
 							}
-						}
-						
-						if (addNutrient) {
-							if (recommendedFoods.containsKey(food)) {
-								int oldValue = recommendedFoods.get(food);
-								recommendedFoods.put(food, oldValue+1);
-								double oldIntake = missingIntake.get(nutrient);
-								missingIntake.put(nutrient, oldIntake - nutrientIntake);
-							} else {
+							else {
 								recommendedFoods.put(food, 1);
 							}
+							missingIntake.put(nutrient, missingIntake.get(nutrient) - food.getNutrientIntake(nutrient));
 						}
+						else {
+							count++;
+						}
+						
 					}
-				} else {
-					// not missing this nutrient, remove from missing intake list
-					missingIntake.remove(nutrient);
+					if (count == foodDatabase.size()){
+						missingIntake.remove(nutrient);
+					}
 				}
 			}
 		}
+	
+		return recommendedFoods;
 	}
 
-	return recommendedFoods;
-}
-
-	static public HashMap<String, Food> getFoodDatabase()
+	static public Hashtable<String, Food> getFoodDatabase() throws FileNotFoundException, IOException
 	{
 		File directory = new File(foodDirectory);
 		File[] filesInDirectory = directory.listFiles();
+//		LinkedList<Food> foodList = new LinkedList<Food>();
+//		LinkedList<Integer> weightList = new LinkedList<Integer>();
+//		
+//		
 
-		HashMap<String, Food> foodDatabase = new HashMap<String, Food>();
+		Hashtable<String, Food> foodDatabase = new Hashtable<String, Food>();
 		for (File f: filesInDirectory) {
 			if (f.isFile()) {
 				Food food = new Food(f.getAbsolutePath());
-				foodDatabase.add(f.getName(), food);
+				foodDatabase.put(f.getName(), food);
 			}
 		}
 
 		return foodDatabase;
 	}
 
-	static private HashMap<String, Double> retrieveRecommendedDailyIntake()
+	static private HashMap<String, Double> retrieveRecommendedDailyIntake() throws IOException
 	{
-		HashMap<String, Integer> recommendedDailyIntake = new HashMap<String, Integer>();
+		HashMap<String, Double> recommendedDailyIntake = new HashMap<String, Double>();
 	
 		BufferedReader foodInformationReader = null;
 		
@@ -87,7 +86,7 @@ public class NutritionalRecommender
 			System.exit(-1);
 		}
 
-		String line;
+		String line = null;
 		
 		try {
 			line = foodInformationReader.readLine();
@@ -95,8 +94,7 @@ public class NutritionalRecommender
 			System.out.println("Error while reading '" + foodInformationFile + "' aborting.");
 			System.exit(-1);
 		}
-		
-		HashMap<String, Integer> recommendedDailyIntake = new HashMap<String, Integer>();
+
 		while (line != null) {
 			String[] tokens = line.split(" ");
 			assert(tokens.length == 2);
@@ -124,10 +122,10 @@ public class NutritionalRecommender
 			assert food.length == 2;
 
 			Food currentFood = new Food(food[0]);
-			Food currentFoodMultiplier = Double.parseDouble(food[1]);
+			double currentFoodMultiplier = Double.parseDouble(food[1]);
 
 			for (Food.Nutrient n: Food.Nutrient.values()) {
-				double nutrientIntake = currentFood.getNutrientIntake(n) * currentFoodMultiplier;
+				double nutrientIntake = currentFood.getNutrientIntake(n.name()) * currentFoodMultiplier;
 			
 				if (currentIntake.containsKey(n.toString())) {
 					nutrientIntake += currentIntake.get(n.toString());
@@ -138,11 +136,12 @@ public class NutritionalRecommender
 			}
 		}
 
-		return currentIntake();
+		return currentIntake;
 	}
 
-	static private HashMap<String, Double> getNutrientWeights()
+	static private Hashtable<String, Double> getNutrientWeights() throws IOException
 	{
+		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader(foodWeightFile));
 		} catch (FileNotFoundException e) {
@@ -150,7 +149,7 @@ public class NutritionalRecommender
 			System.exit(-1);
 		}
 			
-		String line;
+		String line = null;
 		
 		try {
 			line = reader.readLine();
@@ -159,12 +158,12 @@ public class NutritionalRecommender
 			System.exit(-1);
 		}
 
-		HashMap<String, Integer> nutrientWeights = new HashMap<String, Integer>();
+		Hashtable<String, Double> nutrientWeights = new Hashtable<String, Double>();
 
 		while (line != null) {
-			String[] tokens = nextLine.split(" ");
-			assert(tokens.length == 3);
-			nutrientWeights.put(tokens[0], Double.parseDouble(tokens[2]));
+			String[] tokens = line.split(" ");
+			assert(tokens.length == 2);
+			nutrientWeights.put(tokens[0], Double.parseDouble(tokens[1]));
 			
 			try {
 				line = reader.readLine();
@@ -173,7 +172,7 @@ public class NutritionalRecommender
 				System.exit(-1);
 			}
 		}
-
+		reader.close();
 		return nutrientWeights;
 	}
 
@@ -182,7 +181,7 @@ public class NutritionalRecommender
 		HashMap<String, Double> missingIntake = new HashMap<String, Double>();
 
 		for (Food.Nutrient n: Food.Nutrient.values()) {
-			missingIntake.add(n.toString(), recommendedDailyIntake.get(n.toString()) - currentIntake.get(n.toString()));
+			missingIntake.put(n.toString(), recommendedDailyIntake.get(n.toString()) - currentIntake.get(n.toString()));
 		}
 
 		return missingIntake;
