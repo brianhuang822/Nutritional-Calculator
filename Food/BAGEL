@@ -1,31 +1,31 @@
 # serving size (g)
-serving_size 75
+SERVING_SIZE 75
 
 # name | energy (kCal)
-total_calories 207
-fat_calories 10
+TOTAL_CALORIES 207
+FAT_CALORIES 10
 
-# name | mass (g) | daily portion (%) [based on a 2000 kcal diet]
-total_fat 1
-saturated_fat 0.211 1
-trans_fat 0
-cholesterol 0.002 1
-sodium 0.374 16
-total_carbohydrates 41 14
-dietary fiber 2 7
-sugar 4
-protein 8 16
+# name | mass (g)
+TOTAL_FAT 1
+SATURATED_FAT 0.211
+TRANS_FAT 0
+CHOLESTEROL 0.002
+SODIUM 0.374
+TOTAL_CARBOHYDRATES 41
+DIETARY FIBER 2
+SUGAR 4
+PROTEIN 8
 
+# name | mass (g)
+CALCIUM 0.03
+IRON 0.0027
+VITAMIN_E 0.000181
+THIAMIN 0.000305
+RIBOFLAVIN 0.000173 
+NIACIN 0.0024
+VITAMIN_B6 0.000045
+FOLATE 0.000068
+PHOSPHORUS 0.071
+MAGNESIUM 0.02
+ZINC 0.000791
 
-# name | daily portion (g)
-calcium 0.03
-iron 0.0027
-vitamin_E 0.000181
-thiamin 0.000305
-riboflavin 0.000173 
-niacin 0.0024
-vitamin_B6 0.000045
-folate 0.000068
-phosphorus 0.071
-magnesium 0.02
-zinc 0.000791

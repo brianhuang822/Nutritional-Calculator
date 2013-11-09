@@ -5,7 +5,7 @@ SERVING_SIZE 182
 TOTAL_CALORIES 91
 FAT_CALORIES 2
 
-# name | mass (g) | daily portion (%) [based on a 2000 kcal diet]
+# name | mass (g)
 TOTAL_FAT 0.273
 SATURATED_FAT 0.045
 TRANS_FAT 0
@@ -16,7 +16,7 @@ DIETARY_FIBER 3
 SUGAR 19
 PROTEIN 0.482
 
-# name | daily portion (g)
+# name | mass (g)
 VITAMIN_A 0.0000046
 VITAMIN_C 0.0078
 CALCIUM 0.010

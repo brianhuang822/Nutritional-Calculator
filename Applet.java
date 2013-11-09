@@ -3,7 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class Slider1Demo extends JPanel
+public class Applet extends JPanel
 implements ActionListener,
 WindowListener,
 ChangeListener {

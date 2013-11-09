@@ -75,6 +75,10 @@ public class Food
 
 	private void parseLine(String line)
 	{
+		if (line[0] == '#' || line.match("(\t|\s)*\n")) {
+			return;
+		}
+
 		String[] tokens = line.split(" ");
 		assert tokens.length == 2;
 		
