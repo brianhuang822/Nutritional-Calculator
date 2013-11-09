@@ -122,8 +122,8 @@ public class NutritionalRecommender
 	{
 		HashMap<String, Double> currentIntake = new HashMap<String, Double>();
 
-		for (String foodAndAmount: pPerson) {
-			String[] food = foodAndAmount.split(" ");
+		while (pPerson.hasNext()) {
+			String[] food = pPerson.next().split(" ");
 			assert food.length == 2;
 
 			Food currentFood = null;

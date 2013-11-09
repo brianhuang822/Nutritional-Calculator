@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -36,10 +37,9 @@ public class Food
 	{
 		BufferedReader reader = null;
 		reader = new BufferedReader(new FileReader(pPath));
+		String line = (new File(pPath)).getName();
 		
-		String line;
 		line = reader.readLine();
-
 		
 		while (line != null) {
 			parseLine(line);
@@ -48,6 +48,11 @@ public class Food
 		reader.close();
 	}
 
+	public String getName()
+	{
+		return name;
+	}
+	
 	public double getServingSize()
 	{
 		return servingSize;
@@ -68,6 +73,7 @@ public class Food
 		return nutrientIntake.get(nutrient);
 	}
 
+	private String name;
 	private double servingSize;
 	private double totalCalories;
 	private double fatCalories;

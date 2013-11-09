@@ -104,8 +104,13 @@ public class Applet extends JPanel
      * Action to be performed after the recommended button is pressed.
      */
     public void actionPerformed(ActionEvent e) {
-    	Person person();
-        HashMap<String, Double> recommendations = NutritionalRecommender.getDailyNutritionalRecommendation(person);
+    	Person person = new Person(foodMultipliers);
+        HashMap<Food, Integer> recommendations = NutritionalRecommender.getDailyNutritionalRecommendation(person);
+        
+        System.out.println("You consider the following change to your diet:");
+        for (Food food: foodDatabase.values()) {
+        	System.out.println(food.getName() + ": " + recommendations.get(food));
+        }
     }
     
     /*
