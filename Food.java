@@ -1,40 +1,23 @@
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Food
 {
-	public Food(String pPath)
+	public Food(String pPath) throws FileNotFoundException, IOException
 	{
-		File folder = new File(pPath);
-		File[] foods = folder.listFiles();
+		BufferedReader reader = null;
+		reader = new BufferedReader(new FileReader(pPath));
 		
-		for (File food: foods) {
-			BufferedReader reader = null;
-			
-			if (food.isFile()) {
-				try {
-					reader = new BufferedReader(new FileReader(food));
-				} catch (FileNotFoundException e) {
-					System.out.println("Unable to open: " + food.getAbsolutePath());
-					continue;
-				}
-				
-				String line;
-				try {
-					line = reader.readLine();
-				} catch (IOException e) {
-					System.out.println("Unable to read: " + food.getAbsolutePath());
-					continue;
-				}
-				
-				while (line != null) {
-					parseLine(line);
-				}
-			}
+		String line;
+		line = reader.readLine();
+		
+		while (line != null) {
+			parseLine(line);
 		}
+		
+		reader.close();
 	}
 	
 	public double getServingSize()
@@ -109,6 +92,11 @@ public class Food
 		return nutritional_facts.vitamin_C;
 	}
 	
+	public double getVitaminD()
+	{
+		return nutritional_facts.vitamin_D;
+	}
+
 	public double getCalcium()
 	{
 		return nutritional_facts.calcium;
@@ -188,6 +176,7 @@ public class Food
 		
 		public double vitamin_A;
 		public double vitamin_C;
+		public double vitamin_D;
 		public double calcium;
 		public double iron;
 		public double vitamin_E;
@@ -313,6 +302,9 @@ public class Food
 		} else if (tokens[0].compareTo("vitamin_C") == 0) {
 			assert(tokens.length == 2);
 			nutritional_facts.vitamin_C = Integer.parseInt(tokens[1]);
+		} else if (tokens[0].compareTo("vitamin_D") == 0) {
+			assert(tokens.length == 2);
+			nutritional_facts.vitamin_D = Integer.parseInt(tokens[1]);
 		} else if (tokens[0].compareTo("calcium") == 0) {
 			assert(tokens.length == 2);
 			nutritional_facts.calcium = Integer.parseInt(tokens[1]);

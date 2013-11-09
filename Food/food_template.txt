@@ -32,3 +32,37 @@ phosphorus
 magnesium
 zinc
 
+# serving size (g)
+serving_size
+
+# name | energy (kCal)
+total_calories
+fat_calories
+
+# name | mass (g) | daily portion (%) [based on a 2000 kcal diet]
+total_fat
+saturated_fat
+trans_fat 
+cholesterol
+sodium
+total_carbohydrates
+dietary_fiber
+sugar
+protein
+
+# name | daily portion (%) [based on a 2000 kcal diet]
+vitamin_A
+vitamin_C
+calcium
+iron
+vitamin_D
+vitamin_E
+thiamin
+riboflavin
+niacin
+vitamin_B6
+vitamin_B12
+folate
+phosphorus
+magnesium
+zinc
