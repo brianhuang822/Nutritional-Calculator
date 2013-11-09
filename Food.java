@@ -63,9 +63,9 @@ public class Food
 		return fatCalories;
 	}
 
-	public double getNutrientIntake(Nutrient n)
+	public double getNutrientIntake(String nutrient)
 	{
-		return nutrientIntake.get(n);
+		return nutrientIntake.get(nutrient);
 	}
 
 	private double servingSize;
