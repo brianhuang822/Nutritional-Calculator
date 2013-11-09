@@ -1,0 +1,24 @@
+serving_size 36
+total_calories 13
+fat_calories 1
+total_fat 0.066 0
+saturated_fat 0.011 0
+trans_fat 0
+cholestrol 0 0
+sodium 0.026 1
+total_carbohydrates 3 1
+dietary_fiber 1 4
+sugar 2
+protein 0.279 1
+vitamin_A 108
+vitamin_C 3
+calcium 1
+iron 1
+vitamin_E 1
+thiamin 1
+riboflavin 1
+niacin 1
+vitamin_B6 2
+folate 2
+phosphorus 1
+magnesium 1
