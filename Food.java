@@ -43,6 +43,7 @@ public class Food
 		
 		while (line != null) {
 			parseLine(line);
+			line = reader.readLine();
 		}
 		
 		reader.close();
