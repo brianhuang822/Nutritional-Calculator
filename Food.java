@@ -76,7 +76,7 @@ public class Food
 		return fatCalories;
 	}
 
-	public double getNutrientIntake(String nutrient)
+	public double getNutrientIntake(Nutrient nutrient)
 	{
 		if (!nutrientIntake.containsKey(nutrient)) {
 			return 0.0;

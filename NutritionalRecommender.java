@@ -12,27 +12,38 @@ public class NutritionalRecommender
     static private String foodInformationFile = "./info/total_daily_nutritional";
     static private String foodWeightFile = "./info/weights";
 
-    static public HashMap<Food, Integer> getDailyNutritionalRecommendation(Person pPerson) {
+    static public HashMap<String, Integer> getDailyNutritionalRecommendation(Person pPerson) {
         HashMap<String, Double> recommendedDailyIntake = retrieveRecommendedDailyIntake();
-        HashMap<String, Double> currentIntake = getCurrentIntake(pPerson);
+        HashMap<Food.Nutrient, Double> currentIntake = getCurrentIntake(pPerson);
         Hashtable<String, Double> nutrientsWeights = getNutrientWeights();
         Hashtable<String, Food> foodDatabase = getFoodDatabase();
-        HashMap<String, Double> missingIntake = getMissingIntake(recommendedDailyIntake, currentIntake);
-
-        HashMap<Food, Integer> recommendedFoods = new HashMap<Food, Integer>();
-        int count;
+        HashMap<Food.Nutrient, Double> missingIntake = getMissingIntake(recommendedDailyIntake, currentIntake);
         
-        while (missingIntake.size() > 0){
-            for (String nutrient : missingIntake.keySet()){
-                count = 0;
+        HashMap<String, Integer> recommendedFoods = new HashMap<String, Integer>();
+        int count;
+        int recommendCount = 0;
+        System.out.println(missingIntake.size());
+        while (recommendCount < 10){
+        System.out.println("rec"+recommendCount);
+            for (Food.Nutrient nutrient : missingIntake.keySet()){
+            	count = 0;
                 if (missingIntake.get(nutrient) > 0){
                     for (Food food : foodDatabase.values()){
+                    	//System.out.println("food nutrient" + food.getNutrientIntake(nutrient));
+                    	
+//                    	for (Food.Nutrient a: Food.Nutrient.values()) {
+//                    	System.out.println(a + ":" + food.getNutrientIntake(a));
+//                    	}
+                    	//System.out.println(missingIntake.get(nutrient));
                         if (missingIntake.get(nutrient) - food.getNutrientIntake(nutrient) >= 0){
                             if (recommendedFoods.containsKey(food)){
-                                recommendedFoods.put(food, recommendedFoods.get(food)+1);
+                            	//System.out.println(food.getName());
+                                recommendedFoods.put(food.getName(), recommendedFoods.get(food)+1);
+                                recommendCount++;
                             }
                             else {
-                                recommendedFoods.put(food, 1);
+                                recommendedFoods.put(food.getName(), 1);
+                                recommendCount++;
                             }
                             missingIntake.put(nutrient, missingIntake.get(nutrient) - food.getNutrientIntake(nutrient));
                         }
@@ -41,6 +52,7 @@ public class NutritionalRecommender
                         }
                         
                     }
+                    System.out.println("COUNT: "+count);
                     if (count == foodDatabase.size()){
                         missingIntake.remove(nutrient);
                     }
@@ -116,9 +128,9 @@ public class NutritionalRecommender
         return recommendedDailyIntake;
     }
 
-    static private HashMap<String, Double> getCurrentIntake(Person pPerson)
+    static private HashMap<Food.Nutrient, Double> getCurrentIntake(Person pPerson)
     {
-        HashMap<String, Double> currentIntake = new HashMap<String, Double>();
+        HashMap<Food.Nutrient, Double> currentIntake = new HashMap<Food.Nutrient, Double>();
 
         for (String line : pPerson.foodQuantity) {
         	String[] food = line.split(" ");
@@ -135,14 +147,14 @@ public class NutritionalRecommender
             double currentFoodMultiplier = Double.parseDouble(food[1]);
 
             for (Food.Nutrient n: Food.Nutrient.values()) {
-        		double nutrientIntake = currentFood.getNutrientIntake(n.name()) * currentFoodMultiplier;
+        		double nutrientIntake = currentFood.getNutrientIntake(n) * currentFoodMultiplier;
             
                 if (currentIntake.containsKey(n.toString())) {
                     nutrientIntake += currentIntake.get(n.toString());
                     currentIntake.remove(n.toString());
                 }
             
-                currentIntake.put(n.toString(), nutrientIntake);
+                currentIntake.put(n, nutrientIntake);
             }
         }
 
@@ -192,17 +204,15 @@ public class NutritionalRecommender
         return nutrientWeights;
     }
 
-    static private HashMap<String, Double> getMissingIntake(HashMap<String, Double> recommendedDailyIntake, HashMap<String, Double> currentIntake)
+    static private HashMap<Food.Nutrient, Double> getMissingIntake(HashMap<String, Double> recommendedDailyIntake, HashMap<Food.Nutrient, Double> currentIntake)
     {
-        HashMap<String, Double> missingIntake = new HashMap<String, Double>();
-
+        HashMap<Food.Nutrient, Double> missingIntake = new HashMap<Food.Nutrient, Double>();
         for (Food.Nutrient n: Food.Nutrient.values()) {
         	if (!recommendedDailyIntake.containsKey(n.toString())) {
-        		assert !currentIntake.containsKey(n.toString());
+        		assert !currentIntake.containsKey(n);
         		continue;
         	}
-        	
-            missingIntake.put(n.toString(), recommendedDailyIntake.get(n.toString()) - currentIntake.get(n.toString()));
+            missingIntake.put(n, recommendedDailyIntake.get(n.toString()) - currentIntake.get(n));
         }
 
         return missingIntake;

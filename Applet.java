@@ -105,11 +105,11 @@ public class Applet extends JPanel
      */
     public void actionPerformed(ActionEvent e) {
     	Person person = new Person(foodMultipliers);
-        HashMap<Food, Integer> recommendations = NutritionalRecommender.getDailyNutritionalRecommendation(person);
+        HashMap<String, Integer> recommendations = NutritionalRecommender.getDailyNutritionalRecommendation(person);
         
         System.out.println("You consider the following change to your diet:");
         for (Food food: foodDatabase.values()) {
-        	System.out.println(food.getName() + ": " + recommendations.get(food));
+        	System.out.println(food.getName() + ": " + recommendations.get(food.getName()));
         }
     }
     
