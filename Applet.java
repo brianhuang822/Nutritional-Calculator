@@ -3,10 +3,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import NutritionalRecommender
+
 public class Applet extends JPanel
-implements ActionListener,
-WindowListener,
-ChangeListener {
+	implements ActionListener, WindowListener, ChangeListener {
 
     public enum Food {
         APPLE,

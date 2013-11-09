@@ -2,3 +2,6 @@
 /Food$Format.class
 /Food$NutritionalFacts.class
 /Food$Nutrient.class
+/Applet$Food.class
+/Applet.class
+/NutritionalRecommender.class

@@ -75,7 +75,7 @@ public class Food
 
 	private void parseLine(String line)
 	{
-		if (line[0] == '#' || line.match("(\t|\s)*\n")) {
+		if (line.charAt(0) == '#' || line.matches("(\t|\\s)*\n")) {
 			return;
 		}
 
